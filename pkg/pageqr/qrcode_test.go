@@ -15,7 +15,7 @@ func TestGenerateImage(t *testing.T) {
 	testpath := "static/images/qrcode.png"
 	checksum := [16]byte{186, 89, 188, 226, 128, 201, 174, 122, 169, 0, 1, 81, 127, 65, 34, 176}
 
-	err := generateImage("hello world", testpath, qrcode.Medium, 256)
+	err := GenerateImage("hello world", testpath, qrcode.Medium, 256)
 	if err != nil {
 		t.Error(err)
 	}

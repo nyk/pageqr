@@ -26,13 +26,22 @@ func main() {
 				if err != nil {
 					return
 				}
-				log.Println("Yay: ", fpath)
-				pageqr.ParsePage(fpath, viper.GetString("CssSelector"),
-					func(info pageqr.ImageInfo) {
-						log.Println(info.PageURL)
-					})
+
+				processPage(fpath)
 			})
 	}
+}
+
+func processPage(fpath string) {
+	pageqr.ParsePage(fpath, viper.GetString("CssSelector"),
+		func(info pageqr.ImageInfo) {
+			err := pageqr.GenerateImage(
+				info.PageURL, info.ImageSrc,
+				viper.Get("recovery").(qrcode.RecoveryLevel), viper.GetInt("ImageSize"))
+			if err != nil {
+				log.Println(err)
+			}
+		})
 }
 
 func configure() {
@@ -41,8 +50,20 @@ func configure() {
 	viper.SetConfigName("PageQR")
 	viper.SetDefault("CssSelector", "img.qrcode")
 	viper.SetDefault("Extensions", []string{".htm", ".html"})
-	viper.SetDefault("RecoveryLevel", qrcode.Medium)
-	viper.SetDefault("PixelSize", 256)
+	viper.SetDefault("ImageSize", 256)
+
+	switch viper.GetString("RecoveryLevel") {
+	case "Low":
+		viper.SetDefault("recovery", qrcode.Low)
+	case "Medium":
+		viper.SetDefault("recovery", qrcode.Medium)
+	case "High":
+		viper.SetDefault("recovery", qrcode.High)
+	case "Highest":
+		viper.SetDefault("recovery", qrcode.Highest)
+	default:
+		viper.SetDefault("recovery", qrcode.Low)
+	}
 
 	err := viper.ReadInConfig()
 	if err != nil {

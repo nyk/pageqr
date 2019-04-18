@@ -5,7 +5,7 @@ import (
 )
 
 // Function to generate a QR code image.
-func generateImage(content string, imgPath string,
+func GenerateImage(content string, imgPath string,
 	recovery qrcode.RecoveryLevel, size int) error {
 	file, err := Fs.Create(imgPath)
 	if err != nil {
