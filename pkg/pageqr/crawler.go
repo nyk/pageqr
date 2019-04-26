@@ -1,3 +1,17 @@
+// Copyright © 2019 Nicholas J. Cowham <nyk@cowham.net>
+//
+// Licensed under the Apache License, Version 2.0 (the "License");
+// you may not use this file except in compliance with the License.
+// You may obtain a copy of the License at
+//
+//     http://www.apache.org/licenses/LICENSE-2.0
+//
+// Unless required by applicable law or agreed to in writing, software
+// distributed under the License is distributed on an "AS IS" BASIS,
+// WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+// See the License for the specific language governing permissions and
+// limitations under the License.
+
 package pageqr
 
 import (
@@ -6,12 +20,6 @@ import (
 	"github.com/PuerkitoBio/goquery"
 	"github.com/spf13/afero"
 )
-
-// ImageInfo is a type that expresses info extracted from the parsed image tags
-type ImageInfo struct {
-	PageURL  string
-	ImageSrc string
-}
 
 // Fs is a package variable to set the Afero filesystem backend
 var Fs = afero.NewOsFs()
@@ -64,6 +72,7 @@ func ParsePage(fpath, cssSelect string, run func(ImageInfo)) error {
 	doc.Find(cssSelect).Each(
 		func(i int, sel *goquery.Selection) {
 			var info ImageInfo
+			info.PagePath = fpath
 			info.PageURL, _ = sel.Attr("title")
 			info.ImageSrc, _ = sel.Attr("src")
 			run(info)

@@ -1,5 +1,9 @@
 # Configuration file for PageQR
 
+# Absolute path to the root directory of your site.
+SiteRoot = "/var/www/sites/mysite"
+
+# The jQuery style selector for image tags to parse for QR code images.
 CssSelector = "img.qrcode"
 
 # Paths to scan for pages to generate QR code images.
@@ -8,4 +12,5 @@ Include = ["./static/html", "../../../../Downloads/Video"]
 # Paths to exclude from the scan for pages to generate QR code images.
 Exclude = ["public/bar", "public/foo"]
 
+# File extensions of pages to parse for QR code image requests.
 Extensions = [".html", ".htm"]
